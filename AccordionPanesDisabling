@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Accordion disabling</title>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.7.2/dijit/themes/claro/claro.css">
+	<script>dojoConfig = {parseOnLoad: true}</script>
+	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+        
+  </head>
+  <body class="claro">
+	<div id="content">
+		<div id="right" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:true, liveSplitters:false" style="width: 300px; height: 400px;">
+			<div id="accordionContainer_1" data-dojo-type="dijit/layout/AccordionContainer" data-dojo-props="minSize:20, region:'center', splitter:true" style="width: 300px; height:400px;" data-dojo-attach-event="click:Cancel" >
+				<div data-dojo-type="dijit/layout/AccordionPane"  title="title 1" selected="true">
+					1
+				</div>
+				<div data-dojo-type="dijit/layout/AccordionPane" title="title 2">
+					2
+				</div>
+				<div data-dojo-type="dijit/layout/AccordionPane"  title="title 3" >
+					3
+				</div>
+			</div>
+		</div>
+	</div>
+	<button id="btn1" data-dojo-type="dijit/form/Button" >enable</button>
+	<button id="btn2"data-dojo-type="dijit/form/Button" >disable</button>
+  	<script type="text/javascript">
+		require(["dojo/_base/event","dijit/registry","dojo/ready","dojo/_base/array"],function(event,registry,ready,array){
+			var onTitleClick = null; 
+			var onKeyPress = null;
+			
+			ready(function(){
+				console.log(registry.byId("accordionContainer_1").getChildren());
+				array.forEach(registry.byId("accordionContainer_1").getChildren(), function(pane) {
+					if(onTitleClick == null || onKeyPress == null ){
+						onTitleClick = pane._buttonWidget._onTitleClick;
+						onKeyPress = pane._buttonWidget._onTitleClick;
+					}
+					pane._buttonWidget._onTitleClick = function() { /* no op */ }; 
+					pane._buttonWidget._onKeyPress = function() { /* no op */ }
+			    });
+				
+				registry.byId("btn1").on("click",function (){
+					array.forEach(registry.byId("accordionContainer_1").getChildren(), function(pane) { 
+					   pane._buttonWidget._onTitleClick = onTitleClick; 
+					   pane._buttonWidget._onKeyPress = onKeyPress;
+				   });
+				});
+				
+				registry.byId("btn2").on("click",function (){
+					array.forEach(registry.byId("accordionContainer_1").getChildren(), function(pane) { 
+					   pane._buttonWidget._onTitleClick = function() { /* no op */ };
+					   pane._buttonWidget._onKeyPress = function() { /* no op */ };
+				   });
+				});
+				
+			});
+		});
+	</script>
+  </body>
+</html>
