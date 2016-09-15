@@ -2,9 +2,8 @@
 <html>
   <head>
     <title>Test Accordion disabling</title>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.7.2/dijit/themes/claro/claro.css">
-	<script>dojoConfig = {parseOnLoad: true}</script>
-	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dijit/themes/claro/claro.css">
+	
         
   </head>
   <body class="claro">
@@ -25,10 +24,14 @@
 	</div>
 	<button id="btn1" data-dojo-type="dijit/form/Button" >enable</button>
 	<button id="btn2"data-dojo-type="dijit/form/Button" >disable</button>
+	<script>dojoConfig = {parseOnLoad: false}</script>
+	<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
   	<script type="text/javascript">
-		require(["dojo/_base/event","dijit/registry","dojo/ready","dojo/_base/array"],function(event,registry,ready,array){
+		require(["dojo/parser","dojo/_base/event","dijit/registry","dojo/ready","dojo/_base/array"],function(parser,event,registry,ready,array){
 			var onTitleClick = null; 
 			var onKeyPress = null;
+			
+			parser.parse();
 			
 			ready(function(){
 				console.log(registry.byId("accordionContainer_1").getChildren());
